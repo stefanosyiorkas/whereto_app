@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MapPin, Clock, Music, Calendar, Users } from 'lucide-react';
 import { Event } from '../types';
-import EventModal from './EventModal';
 
 interface EventCardProps {
   event: Event;
+  onViewDetails: (event: Event) => void;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ event }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+const EventCard: React.FC<EventCardProps> = ({ event, onViewDetails }) => {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -32,11 +30,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   };
 
   return (
-    <>
-      <div 
-        className="bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-700 hover:border-yellow-500/50 group transform hover:-translate-y-2 hover:scale-105 cursor-pointer"
-        onClick={() => setIsModalOpen(true)}
-      >
+    <div className="bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-700 hover:border-yellow-500/50 group transform hover:-translate-y-2 hover:scale-105">
       <div className="relative">
         <img
           src={event.image}
@@ -89,26 +83,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
             <Music size={16} className="text-yellow-400" />
             <span className="text-xs text-gray-400 uppercase tracking-wide">{event.genre}</span>
           </div>
-          <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsModalOpen(true);
-            }}
-            className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black rounded-lg hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg"
-          >
-            Get Tickets
+          <button className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black rounded-lg hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 font-medium transform hover:scale-105 hover:shadow-lg">
+            <span onClick={() => onViewDetails(event)}>Get Tickets</span>
           </button>
         </div>
       </div>
-      </div>
-
-      {/* Modal */}
-      <EventModal 
-        event={event}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </>
+    </div>
   );
 };
 

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Calendar, MapPin, Music, Clock, Filter, Search } from 'lucide-react';
 import EventCard from './EventCard';
+import EventModal from './EventModal';
 import WeeklyCalendar from './WeeklyCalendar';
 import FilterPanel from './FilterPanel';
 import { events } from '../data/events';
+import { Event } from '../types';
 
 const NightSection: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,16 +14,30 @@ const NightSection: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar');
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewDetails = (event: Event) => {
+    setSelectedEvent(event);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedEvent(null);
+  };
+
+  const locations = Array.from(new Set(events.map(event => event.location))).sort();
 
   const filteredEvents = events.filter(event => {
     const matchesSearch = event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          event.venue.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          event.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          event.artist.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLocation = !selectedLocation || event.location.includes(selectedLocation);
+    const matchesLocation = !selectedLocation || event.location === selectedLocation;
     const matchesGenre = !selectedGenre || event.genre === selectedGenre;
     const matchesDate = !selectedDate || event.date === selectedDate;
-    
+
     return matchesSearch && matchesLocation && matchesGenre && matchesDate;
   });
 
@@ -58,8 +74,8 @@ const NightSection: React.FC = () => {
                   <button
                     onClick={() => setViewMode('calendar')}
                     className={`px-4 py-3 rounded-xl transition-colors flex items-center space-x-2 ${
-                      viewMode === 'calendar' 
-                        ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-lg scale-105' 
+                      viewMode === 'calendar'
+                        ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-lg scale-105'
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:scale-105 transform'
                     }`}
                   >
@@ -68,8 +84,8 @@ const NightSection: React.FC = () => {
                   <button
                     onClick={() => setViewMode('list')}
                     className={`px-4 py-3 rounded-xl transition-all duration-300 transform ${
-                      viewMode === 'list' 
-                        ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-lg scale-105' 
+                      viewMode === 'list'
+                        ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-lg scale-105'
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:scale-105'
                     }`}
                   >
@@ -84,7 +100,34 @@ const NightSection: React.FC = () => {
                   </button>
                 </div>
               </div>
-              
+
+              {/* Location Pills */}
+              <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                <button
+                  onClick={() => setSelectedLocation('')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    selectedLocation === ''
+                      ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-lg scale-105'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:scale-105'
+                  }`}
+                >
+                  All Locations
+                </button>
+                {locations.map((location) => (
+                  <button
+                    key={location}
+                    onClick={() => setSelectedLocation(location)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      selectedLocation === location
+                        ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-black shadow-lg scale-105'
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:scale-105'
+                    }`}
+                  >
+                    {location}
+                  </button>
+                ))}
+              </div>
+
               {showFilters && (
                 <FilterPanel
                   selectedLocation={selectedLocation}
@@ -102,10 +145,10 @@ const NightSection: React.FC = () => {
       </section>
 
       {/* Content Section */}
-      <section className="pb-0">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {viewMode === 'calendar' ? (
-            <WeeklyCalendar events={filteredEvents} />
+            <WeeklyCalendar events={filteredEvents} onEventClick={handleViewDetails} />
           ) : (
             <>
               <div className="flex items-center justify-between mb-8">
@@ -116,7 +159,7 @@ const NightSection: React.FC = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredEvents.map((event) => (
-                  <EventCard key={event.id} event={event} />
+                  <EventCard key={event.id} event={event} onViewDetails={handleViewDetails} />
                 ))}
               </div>
               
@@ -133,6 +176,15 @@ const NightSection: React.FC = () => {
           )}
         </div>
       </section>
+
+      {/* Event Modal */}
+      {selectedEvent && (
+        <EventModal
+          event={selectedEvent}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };

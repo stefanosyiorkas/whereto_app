@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { MapPin, Star, Clock, Phone, Globe, Filter, Search } from 'lucide-react';
 import VenueCard from './VenueCard';
+import VenueModal from './VenueModal';
 import FilterPanel from './FilterPanel';
 import { venues } from '../data/venues';
+import { Venue } from '../types';
 
 const DaySection: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -10,15 +12,29 @@ const DaySection: React.FC = () => {
   const [selectedRating, setSelectedRating] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewDetails = (venue: Venue) => {
+    setSelectedVenue(venue);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedVenue(null);
+  };
+
+  const locations = Array.from(new Set(venues.map(venue => venue.location))).sort();
 
   const filteredVenues = venues.filter(venue => {
     const matchesSearch = venue.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          venue.cuisine.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          venue.location.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLocation = !selectedLocation || venue.location.includes(selectedLocation);
+    const matchesLocation = !selectedLocation || venue.location === selectedLocation;
     const matchesRating = !selectedRating || venue.rating >= parseFloat(selectedRating);
     const matchesType = !selectedType || venue.type === selectedType;
-    
+
     return matchesSearch && matchesLocation && matchesRating && matchesType;
   });
 
@@ -59,7 +75,34 @@ const DaySection: React.FC = () => {
                   <span>Filters</span>
                 </button>
               </div>
-              
+
+              {/* Location Pills */}
+              <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                <button
+                  onClick={() => setSelectedLocation('')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    selectedLocation === ''
+                      ? 'bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-lg scale-105'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                  }`}
+                >
+                  All Locations
+                </button>
+                {locations.map((location) => (
+                  <button
+                    key={location}
+                    onClick={() => setSelectedLocation(location)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      selectedLocation === location
+                        ? 'bg-gradient-to-r from-rose-500 to-rose-600 text-white shadow-lg scale-105'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105'
+                    }`}
+                  >
+                    {location}
+                  </button>
+                ))}
+              </div>
+
               {showFilters && (
                 <FilterPanel
                   selectedLocation={selectedLocation}
@@ -87,7 +130,7 @@ const DaySection: React.FC = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredVenues.map((venue) => (
-              <VenueCard key={venue.id} venue={venue} />
+              <VenueCard key={venue.id} venue={venue} onViewDetails={handleViewDetails} />
             ))}
           </div>
           
@@ -102,6 +145,15 @@ const DaySection: React.FC = () => {
           )}
         </div>
       </section>
+
+      {/* Venue Modal */}
+      {selectedVenue && (
+        <VenueModal
+          venue={selectedVenue}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
