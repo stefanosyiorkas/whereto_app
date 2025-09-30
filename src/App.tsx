@@ -18,12 +18,12 @@ function App() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-rose-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">E</span>
+                <span className="text-white font-bold text-xl">W</span>
               </div>
               <h1 className={`text-xl font-bold ${
                 activeSection === 'day' ? 'text-gray-900' : 'text-white'
               }`}>
-                EventHub
+                WhereTo?
               </h1>
             </div>
             
