@@ -46,29 +46,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         ? 'bg-rose-50/50 border-rose-200 animate-fade-in' 
         : 'bg-gray-700/50 border-yellow-600/30 animate-fade-in'
     }`}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Location Filter */}
-        <div>
-          <label className={`block text-sm font-medium mb-2 ${
-            isDay ? 'text-gray-700' : 'text-gray-300'
-          }`}>
-            Location
-          </label>
-          <select
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border focus:ring-2 focus:ring-rose-500 focus:border-transparent ${
-              isDay 
-                ? 'bg-white border-gray-300 text-gray-900 hover:shadow-md transition-all duration-200' 
-                : 'bg-gray-600 border-gray-500 text-white hover:shadow-md transition-all duration-200 focus:ring-yellow-500'
-            }`}
-          >
-            <option value="">All Locations</option>
-            {locations.map(location => (
-              <option key={location} value={location}>{location}</option>
-            ))}
-          </select>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
         {/* Rating Filter (Day only) */}
         {isDay && setSelectedRating && (

@@ -42,7 +42,7 @@ const DaySection: React.FC = () => {
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-rose-50 to-orange-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center mb-10">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Discover Amazing <span className="text-rose-600">Dining</span>
@@ -67,13 +67,14 @@ const DaySection: React.FC = () => {
                     className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all duration-200 focus:shadow-lg"
                   />
                 </div>
-                <button
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="px-6 py-3 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-xl hover:from-rose-600 hover:to-rose-700 transition-all duration-300 flex items-center space-x-2 hover:scale-105 hover:shadow-lg transform"
-                >
-                  <Filter size={20} className="transition-transform duration-200 hover:rotate-12" />
-                  <span>Filters</span>
-                </button>
+                <div className="flex gap-2 flex-shrink-0">
+                  <button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="px-4 py-3 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-xl hover:from-rose-600 hover:to-rose-700 transition-all duration-300 flex items-center hover:scale-105 hover:shadow-lg transform"
+                  >
+                    <Filter size={20} className="transition-transform duration-200 hover:rotate-12" />
+                  </button>
+                </div>
               </div>
 
               {/* Location Pills */}
@@ -121,7 +122,7 @@ const DaySection: React.FC = () => {
 
       {/* Venues Grid */}
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-2xl font-bold text-gray-900">
               Featured Venues ({filteredVenues.length})

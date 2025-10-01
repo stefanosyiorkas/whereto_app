@@ -14,16 +14,16 @@ function App() {
           ? 'bg-white/95 backdrop-blur-sm border-b border-rose-200' 
           : 'bg-black/95 backdrop-blur-sm border-b border-rose-400/20'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-rose-400 to-rose-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">W</span>
+                <span className="text-white font-bold text-xl">E</span>
               </div>
               <h1 className={`text-xl font-bold ${
                 activeSection === 'day' ? 'text-gray-900' : 'text-white'
               }`}>
-                WhereTo?
+                EventHub
               </h1>
             </div>
             
@@ -70,7 +70,7 @@ function App() {
           ? 'bg-gray-50 border-t border-gray-200' 
           : 'bg-gray-900 border-t border-gray-800'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center">
             <p className={`${
               activeSection === 'day' ? 'text-gray-600' : 'text-gray-400'

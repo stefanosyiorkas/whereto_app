@@ -24,7 +24,8 @@ const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ events, onEventClick })
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  const fullDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   const weekDates = useMemo(() => {
@@ -108,7 +109,7 @@ const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ events, onEventClick })
   };
 
   const renderWeeklyView = () => (
-    <div className="grid grid-cols-7 gap-4">
+    <div className="grid grid-cols-7 gap-1 sm:gap-4">
       {weekDates.map((date, index) => {
         const dayEvents = getEventsForDate(date);
         const isCurrentDay = isToday(date);
@@ -117,7 +118,7 @@ const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ events, onEventClick })
         return (
           <div
             key={index}
-            className={`bg-gray-800 rounded-lg p-4 border transition-all duration-300 cursor-pointer hover:scale-105 ${
+            className={`bg-gray-800 rounded-lg p-2 sm:p-4 border transition-all duration-300 cursor-pointer hover:scale-105 ${
               isCurrentDay 
                 ? 'border-yellow-400 bg-yellow-400/10 shadow-lg shadow-yellow-400/20' 
                 : isSelected
@@ -129,20 +130,21 @@ const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ events, onEventClick })
             <div className="text-center">
               <h4 className={`font-semibold mb-2 ${
                 isCurrentDay ? 'text-yellow-400' : 'text-white'
-              }`}>
-                {days[index]}
+              } text-xs sm:text-sm`}>
+                {fullDays[index].slice(0, 1)}
               </h4>
               <div className={`text-2xl font-bold mb-2 ${
                 isCurrentDay ? 'text-yellow-400' : 'text-gray-300'
-              }`}>
+              } text-lg sm:text-2xl`}>
                 {date.getDate()}
               </div>
-              <div className={`text-sm px-2 py-1 rounded-full ${
+              <div className={`text-xs sm:text-sm px-1 sm:px-2 py-1 rounded-full ${
                 dayEvents.length > 0 
                   ? 'bg-yellow-400 text-black font-medium' 
                   : 'bg-gray-700 text-gray-400'
               }`}>
-                {dayEvents.length} {dayEvents.length === 1 ? 'event' : 'events'}
+                <span className="hidden sm:inline">{dayEvents.length} {dayEvents.length === 1 ? 'event' : 'events'}</span>
+                <span className="sm:hidden">{dayEvents.length}</span>
               </div>
             </div>
           </div>
@@ -154,16 +156,16 @@ const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ events, onEventClick })
   const renderMonthlyView = () => (
     <div className="space-y-4">
       {/* Day headers */}
-      <div className="grid grid-cols-7 gap-2">
-        {days.map(day => (
-          <div key={day} className="text-center text-yellow-400 font-semibold py-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">
+        {fullDays.map(day => (
+          <div key={day} className="text-center text-yellow-400 font-semibold py-2 text-xs sm:text-sm">
             {day.slice(0, 3)}
           </div>
         ))}
       </div>
       
       {/* Calendar grid */}
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">
         {monthDates.dates.map((date, index) => {
           const dayEvents = getEventsForDate(date);
           const isCurrentDay = isToday(date);
@@ -173,7 +175,7 @@ const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ events, onEventClick })
           return (
             <div
               key={index}
-              className={`aspect-square bg-gray-800 rounded-lg p-2 border transition-all duration-300 cursor-pointer hover:scale-105 ${
+              className={`aspect-square bg-gray-800 rounded-lg p-1 sm:p-2 border transition-all duration-300 cursor-pointer hover:scale-105 ${
                 isCurrentDay 
                   ? 'border-yellow-400 bg-yellow-400/10 shadow-lg shadow-yellow-400/20' 
                   : isSelected
@@ -183,13 +185,13 @@ const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ events, onEventClick })
               onClick={() => setSelectedDay(isSelected ? null : date)}
             >
               <div className="h-full flex flex-col justify-between">
-                <div className={`text-sm font-semibold ${
+                <div className={`text-xs sm:text-sm font-semibold ${
                   isCurrentDay ? 'text-yellow-400' : isCurrentMonth ? 'text-white' : 'text-gray-500'
                 }`}>
                   {date.getDate()}
                 </div>
                 {dayEvents.length > 0 && (
-                  <div className="text-xs bg-yellow-400 text-black rounded-full px-1 py-0.5 text-center font-medium">
+                  <div className="text-xs bg-yellow-400 text-black rounded-full px-1 py-0.5 text-center font-medium min-w-0">
                     {dayEvents.length}
                   </div>
                 )}

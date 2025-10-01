@@ -45,7 +45,7 @@ const NightSection: React.FC = () => {
     <div className="bg-gray-900 min-h-screen text-white">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-black py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           <div className="text-center mb-10">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Experience the <span className="text-yellow-400">Nightlife</span>
@@ -70,7 +70,7 @@ const NightSection: React.FC = () => {
                     className="w-full pl-12 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent text-white placeholder-gray-400 transition-all duration-200 focus:shadow-lg"
                   />
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-shrink-0">
                   <button
                     onClick={() => setViewMode('calendar')}
                     className={`px-4 py-3 rounded-xl transition-colors flex items-center space-x-2 ${
@@ -93,10 +93,9 @@ const NightSection: React.FC = () => {
                   </button>
                   <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black rounded-xl hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 flex items-center space-x-2 hover:scale-105 hover:shadow-lg transform"
+                    className="px-4 py-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black rounded-xl hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300 flex items-center hover:scale-105 hover:shadow-lg transform"
                   >
                     <Filter size={20} className="transition-transform duration-200 hover:rotate-12" />
-                    <span>Filters</span>
                   </button>
                 </div>
               </div>
@@ -146,7 +145,7 @@ const NightSection: React.FC = () => {
 
       {/* Content Section */}
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
           {viewMode === 'calendar' ? (
             <WeeklyCalendar events={filteredEvents} onEventClick={handleViewDetails} />
           ) : (
